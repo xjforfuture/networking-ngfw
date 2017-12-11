@@ -23,7 +23,8 @@ from neutron.common import constants as l3_constants
 
 from neutron.db import models_v2, l3_db
 
-from neutron.db.external_net_db import ExternalNetwork
+#from neutron.db.external_net_db import ExternalNetwork
+from neutron.objects.network import ExternalNetwork
 
 from oslo_db.sqlalchemy import session
 import neutron.plugins.ml2.models as ml2_db
@@ -36,8 +37,8 @@ from networking_fortinet.tasks import tasks
 from networking_fortinet.tasks import constants as t_consts
 from networking_fortinet.db import models as fortinet_db
 
-ROUTER_INTF = l3_constants.DEVICE_OWNER_ROUTER_INTF
-ROUTER_GW = l3_constants.DEVICE_OWNER_ROUTER_GW
+ROUTER_INTF = l3_db.DEVICE_OWNER_ROUTER_INTF
+ROUTER_GW = l3_db.DEVICE_OWNER_ROUTER_GW
 
 #streamlog = handlers.ColorHandler()
 LOG = logging.getLogger(None).logger
@@ -47,7 +48,7 @@ CFG_ARGS = [
              '--config-file',
              '/etc/neutron/neutron.conf',
              '--config-file',
-             '/etc/neutron/plugin.ini'
+             '/etc/neutron/plugins/ml2/ml2_conf.ini'
            ]
 
 CFG_KWARGS = {}
@@ -84,6 +85,7 @@ class Progress(object):
 class Fake_context(object):
     def __init__(self, args=CFG_ARGS, kwargs=CFG_KWARGS):
         engine = session.EngineFacade.from_config(cfg.CONF)
+        '''
         if not [driver for driver in cfg.CONF.ml2.type_drivers
                        if driver in SUPPORTED_DR]:
             LOG.error(_("The supported type driver %(sdr)s are not in the "
@@ -91,6 +93,8 @@ class Fake_context(object):
                         % {'sdr': SUPPORTED_DR,
                            'td': cfg.CONF.ml2.type_drivers})
             exit()
+        '''
+
         self.session = engine.get_session(autocommit=True,
                                           expire_on_commit=False)
         self.request_id = 'migration_context'
