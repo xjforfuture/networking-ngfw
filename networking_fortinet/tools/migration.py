@@ -29,13 +29,7 @@ from neutron.objects.network import ExternalNetwork
 from oslo_db.sqlalchemy import session
 import neutron.plugins.ml2.models as ml2_db
 
-from networking_fortinet.common import resources
-from networking_fortinet.common import utils
-from networking_fortinet.ml2 import mech_fortinet
-from networking_fortinet.services.l3_router import l3_fortinet
-from networking_fortinet.tasks import tasks
-from networking_fortinet.tasks import constants as t_consts
-from networking_fortinet.db import models as fortinet_db
+
 
 ROUTER_INTF = l3_db.DEVICE_OWNER_ROUTER_INTF
 ROUTER_GW = l3_db.DEVICE_OWNER_ROUTER_GW
@@ -59,6 +53,14 @@ cfg.CONF(args=CFG_ARGS, project='neutron',
          **CFG_KWARGS)
 cfg.CONF.import_group('ml2_fortinet',
                 'networking_fortinet.common.config')
+
+from networking_fortinet.common import resources
+from networking_fortinet.common import utils
+from networking_fortinet.ml2 import mech_fortinet
+from networking_fortinet.services.l3_router import l3_fortinet
+from networking_fortinet.tasks import tasks
+from networking_fortinet.tasks import constants as t_consts
+from networking_fortinet.db import models as fortinet_db
 
 class Progress(object):
     def __init__(self, total, name=''):
